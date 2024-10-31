@@ -3,7 +3,6 @@ package com.lixd.wifiserver.server
 import android.util.Log
 import com.koushikdutta.async.http.server.AsyncHttpServer
 import com.koushikdutta.async.http.server.HttpServerRequestCallback
-import com.lixd.wifiserver.App
 
 class HttpServerImpl : HttpServer {
     private val server: AsyncHttpServer = AsyncHttpServer()
@@ -14,11 +13,18 @@ class HttpServerImpl : HttpServer {
         HttpServerRequestCallback { request, response ->
             Log.d("${TAG}[request]path:", request.path)
             Log.d("${TAG}[request]headers:", request.headers.toString())
-            Log.d("${TAG}[request]matcher:", request.matcher.toString())
             Log.d("${TAG}[request]method:", request.method)
-
-            val input = App.appContext.resources.assets.open("index.html")
-            response.sendStream(input, input.available().toLong())
+            val method = request.method
+            val path = request.path
+            if (method.equals("GET", true)) {
+                getActions[path]?.run {
+                    onGet(request, response)
+                }
+            } else if (method.equals("POST", true)) {
+                postActions[path]?.run {
+                    onPost(request, response)
+                }
+            }
         }
 
     /**
@@ -26,7 +32,6 @@ class HttpServerImpl : HttpServer {
      */
     override fun start(port: Int) {
         Log.e(TAG, "[start]服务已开启")
-        server.get("/", serverRequestCallback)
         server.listen(PORT)
     }
 
