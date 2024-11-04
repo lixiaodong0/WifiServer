@@ -11,9 +11,10 @@ class HttpServerImpl : HttpServer {
 
     private val serverRequestCallback =
         HttpServerRequestCallback { request, response ->
-            Log.d("${TAG}[request]path:", request.path)
+            Log.d("${TAG}[request]method:${request.method},path:", request.path)
+            Log.d("${TAG}[request]query:", request.query.toString())
             Log.d("${TAG}[request]headers:", request.headers.toString())
-            Log.d("${TAG}[request]method:", request.method)
+
             val method = request.method
             val path = request.path
             if (method.equals("GET", true)) {
@@ -32,7 +33,7 @@ class HttpServerImpl : HttpServer {
      */
     override fun start(port: Int) {
         Log.e(TAG, "[start]服务已开启")
-        server.listen(PORT)
+        server.listen(port)
     }
 
     /**
@@ -62,10 +63,5 @@ class HttpServerImpl : HttpServer {
 
     companion object {
         private const val TAG = "HttpServer"
-        const val PORT = 8080
-
-        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            HttpServerImpl()
-        }
     }
 }
