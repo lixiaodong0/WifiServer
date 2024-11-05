@@ -11,10 +11,9 @@ class HttpServerImpl : HttpServer {
 
     private val serverRequestCallback =
         HttpServerRequestCallback { request, response ->
-            Log.d("${TAG}[request]method:${request.method},path:", request.path)
-            Log.d("${TAG}[request]query:", request.query.toString())
-            Log.d("${TAG}[request]headers:", request.headers.toString())
-
+            Log.d(TAG, "[request]method:${request.method},path:" + request.path)
+            Log.d(TAG, "[request]query:" + request.query.toString())
+            Log.d(TAG, "[request]headers:" + request.headers.toString())
             val method = request.method
             val path = request.path
             if (method.equals("GET", true)) {
@@ -62,6 +61,6 @@ class HttpServerImpl : HttpServer {
     }
 
     companion object {
-        private const val TAG = "HttpServer"
+        private const val TAG = "HttpServerImpl"
     }
 }

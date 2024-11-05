@@ -1,6 +1,7 @@
 package com.lixd.wifiserver.util
 
 import android.annotation.SuppressLint
+import com.blankj.utilcode.util.FileUtils
 import com.lixd.wifiserver.server.response.FileDescription
 import java.io.File
 import java.text.DecimalFormat
@@ -59,4 +60,8 @@ object FileUtil {
             size / 1024.0.pow(digitGroups.toDouble())
         ) + " " + units[digitGroups]
     }
+}
+
+fun File.md5(): String {
+    return FileUtils.getFileMD5ToString(this)
 }

@@ -67,6 +67,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation("com.blankj:utilcodex:1.31.1")
     implementation("com.koushikdutta.async:androidasync:2.+")
     implementation("com.google.code.gson:gson:2.10.1")
 }
