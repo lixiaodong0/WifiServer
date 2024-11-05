@@ -1,10 +1,16 @@
 package com.lixd.wifiserver.server
 
 class HttpServerManager private constructor() {
-    lateinit var serverBuilder: ServerBuilder
-        private set
+    private lateinit var serverBuilder: ServerBuilder
     private lateinit var httpServerImpl: HttpServerImpl
     private var isInit = false
+
+    val port: Int by lazy {
+        serverBuilder.port
+    }
+    val filePath: String by lazy {
+        serverBuilder.filePath
+    }
 
     fun init(serverBuilder: ServerBuilder, httpServerImpl: HttpServerImpl) {
         this.serverBuilder = serverBuilder

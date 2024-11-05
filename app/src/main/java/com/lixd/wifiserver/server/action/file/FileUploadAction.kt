@@ -68,7 +68,7 @@ class FileUploadAction : HttpPostAction("/files/upload") {
                 return@setEndCallback
             }
 
-            val defaultToPath = HttpServerManager.instance.serverBuilder.filePath
+            val defaultToPath = HttpServerManager.instance.filePath
             val toPath = extendInfoMap[REQUEST_FIELD_TO_PATH]?.ifEmpty {
                 defaultToPath
             } ?: defaultToPath

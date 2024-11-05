@@ -2,18 +2,309 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale-1.0">
     <title>Wifi Server</title>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/spark-md5/3.0.0/spark-md5.js"></script>
+
     <script>
-        $(document).ready(function(){
-          $("button").click(function(){
-            $(this).hide();
-        });
+        let folderIcon = ('<svg t="1730694330031" class="icon" viewBox="0 0 1204 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1780" width="32" height="32"><path d="M561.63235285 164.57352927h335.01838211c27.29779432 0 49.63235285 22.33455854 49.63235366 49.63235284v62.04044147c0 27.29779432-22.33455854 49.63235285-49.63235366 49.63235284H561.63235285c-27.29779432 0-49.63235285-22.33455854-49.63235285-49.63235284v-62.04044147c0-27.29779432 22.33455854-49.63235285 49.63235285-49.63235284z" fill="#AFFCFE" p-id="1781"></path><path d="M983.50735284 933.875H189.38970568c-54.59558862 0-99.26470568-44.66911789-99.26470568-99.26470568V189.38970568c0-54.59558862 44.66911789-99.26470568 99.26470568-99.26470568h285.38602928c68.24448496 18.61213211 54.59558862 53.35477927 99.2647065 99.26470568l31.02021992 49.63235286H983.50735284c54.59558862 0 99.26470568 44.66911789 99.26470569 99.2647065v496.32352928c0 54.59558862-44.66911789 99.26470568-99.26470569 99.26470568z" fill="#2F77F1" p-id="1782"></path></svg>')
+        let fileIcon = ('<svg t="1730694308454" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1621" width="32" height="32"><path d="M146.863158 0h538.947368l296.421053 296.421053v619.789473c0 59.284211-48.505263 107.789474-107.789474 107.789474H146.863158c-59.284211 0-107.789474-48.505263-107.789474-107.789474V107.789474c0-59.284211 48.505263-107.789474 107.789474-107.789474z" fill="#2F77F1" p-id="1622"></path><path d="M688.505263 0l296.421053 296.421053h-296.421053V0zM549.726316 661.557895H142.821053c-14.821053 0-25.6-12.126316-25.6-25.6V633.263158c0-14.821053 12.126316-25.6 25.6-25.6h406.905263c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-10.778947 25.6-25.6 25.6z m-134.736842-350.31579H142.821053c-14.821053 0-25.6-10.778947-25.6-25.6V282.947368c0-14.821053 12.126316-25.6 25.6-25.6h272.168421c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-10.778947 25.6-25.6 25.6z m-272.168421 121.263158h245.221052c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-12.126316 25.6-25.6 25.6H142.821053c-14.821053 0-25.6-10.778947-25.6-25.6V458.105263c0-14.821053 12.126316-25.6 25.6-25.6z" fill="#AFFCFE" p-id="1623"></path></svg>')
+        let imageIcon = ('<svg t="1730694357863" class="icon" viewBox="0 0 1426 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="32" height="32"><path d="M241.01111082 62h960.00000028c65.99999971 0 119.99999971 54 119.99999972 119.99999971v660.00000058c0 65.99999971-54 119.99999971-119.99999972 119.99999971h-960.00000028c-65.99999971 0-119.99999971-54-119.99999972-119.99999971V181.99999971c0-65.99999971 54-119.99999971 119.99999972-119.99999971z" fill="#2F77F1" p-id="1940"></path><path d="M331.01111082 271.99999971m-90 0a90 90 0 1 0 180 0 90 90 0 1 0-180 0Z" fill="#AFFCFE" p-id="1941"></path><path d="M1321.01111082 748.99999971v-74.99999971L1052.5111111 446.00000029c-11.99999971-9-29.99999971-9-38.99999971 1.49999942L736.01111082 723.5 503.5111111 566c-7.49999971-7.49999971-18-10.50000029-28.50000028-7.49999971L131.51111139 737c-4.5 1.50000029-7.49999971 2.99999971-10.50000029 4.5v49.5c6.00000029 4.5 15.00000029 7.49999971 24.00000029 4.5l325.49999943-173.99999971 243 166.5c6.00000029 6.00000029 13.5 9 21.00000057 9s15.00000029-2.99999971 20.99999971-9l279-279 277.49999972 235.49999942c2.99999971 2.99999971 6.00000029 4.5 9 4.5z" fill="#AFFCFE" p-id="1942"></path></svg>')
+        let videoIcon = ('<svg t="1730694369959" class="icon" viewBox="0 0 1241 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2099" width="32" height="32"><path d="M193.84646453 62h872.72727276c60.00000029 0 109.09090898 49.09090869 109.09090899 109.09090898v681.81818204c0 60.00000029-49.09090869 109.09090898-109.09090899 109.09090898H193.84646453c-60.00000029 0-109.09090898-49.09090869-109.09090898-109.09090898V171.09090898c0-60.00000029 49.09090869-109.09090898 109.09090898-109.09090898z" fill="#2F77F1" p-id="2100"></path><path d="M84.75555555 225.63636348h1090.90909072v54.54545449H84.75555555v-54.5454545z m673.63636377 340.90909101c9.5454545 5.4545458 15.00000029 16.36363653 15.0000003 27.27272725s-5.4545458 21.81818145-15.0000003 27.27272724L589.30101004 726.09090928c-9.5454545 5.4545458-21.81818145 5.4545458-31.36363594-1e-8-9.5454545-5.4545458-16.36363653-16.36363653-15.00000029-27.27272724V490.18181855c0-10.90909073 5.4545458-21.81818145 15.00000029-27.27272724 9.5454545-5.4545458 21.81818145-5.4545458 31.36363594 0L758.39191932 566.54545449z" fill="#AFFCFE" p-id="2101"></path></svg>')
+        let emptyIcon = ('<svg t="1730696366678" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8218" width="256" height="256"><path d="M421.5 855.7H194.3c-9.7 0-20.7-1.3-27.8-10.3-3.5-4.5-6.2-19.3-5.7-29.6V155.7c0-2.2 2.2-17.9 11-26.9 12.8-13 22.1-14.8 23.8-15.2h351.1V209c0 4.9 0 37.2 18.5 58.7 16.8 19.7 43.7 29.6 46.3 30.9l4 1.3H740v113.8c13.2 10.3 26 20.6 39.3 30.9 2.2 2.2 4.4 4.9 6.6 7.2V246.6L584.7 67H194.3c-4.4 0-28.2 1.3-55.1 28.7-22.1 22.4-24.3 54.2-24.3 57.8v661.9c0 6.7 0.4 39 15.4 58.7 9.3 12.1 22.1 20.6 37.5 25.1 11.5 3.1 21.6 3.1 26.5 3.1H504c-18.5-5.8-37.1-14.3-54.7-24.6l-27.8-22zM592.2 136l131 117.3h-99.7c-6.6-3.1-18.1-9-24.3-16.1-4.9-5.8-7.1-19.7-7.1-27.3V136z" p-id="8219"></path><path d="M898.2 894.5L784.7 781c29.7-39.9 47-89.6 47-143.2 0-133.5-108.6-242.1-242-242.1s-242 108.6-242 242.1 108.6 242.1 242 242.1c53.6 0 102.8-17.3 143.2-47l113.5 113.5c7.1 7.1 16.4 10.6 25.7 10.6s18.6-3.5 25.7-10.6c15-14.7 15-37.7 0.4-51.9zM589.7 820c-100.6 0-182.2-81.6-182.2-182.3s82-182.3 182.2-182.3c100.2 0 182.6 82 182.6 182.3S690.3 820 589.7 820z" p-id="8220"></path></svg>')
+
+        let nextIcon = ('<svg t="1730522103881" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3230" width="32" height="32"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#bfbfbf" p-id="3231"></path></svg>')
+
+        let host = "http://192.168.31.89:8080"
+        let rootFilePath = "手机存储"
+        let selectHistoryFilePath = [{
+            name: rootFilePath,
+            path: ""
+        }]
+
+        /**
+         * 查询文件路径
+         * @param host 主机地址
+         * @param path 请求的路径
+         */
+        function queryFiles(host, path) {
+            $.getJSON(host + "/files/get", {
+                selectDirPath: path
+            }, function (data) {
+                console.log("code: " + data.code);
+                console.log("message: " + data.message);
+                console.log("data: " + data.result);
+                $("#fileContainer").empty()
+
+                if (data.result.length <= 0) {
+                    let emptyView = createEmptyView(function () {
+                        back("")
+                    })
+                    $("#fileContainer").append(emptyView);
+                } else {
+                    data.result.forEach((item) => {
+                        let itemView = createItemView(item, function (data) {
+                            queryFiles(host, data.path)
+                            selectHistoryFilePath.push(data)
+                            updateCurrentFilePath()
+                        })
+                        $("#fileContainer").append(itemView);
+                    })
+                }
+            })
+        }
+
+        /**
+         * 回退路径
+         */
+        function back(current) {
+            let last = selectHistoryFilePath[selectHistoryFilePath.length - 1]
+            if (last.name === current.name) {
+                return
+            }
+            if (selectHistoryFilePath.length > 1) {
+                selectHistoryFilePath.pop()
+                let previous = selectHistoryFilePath[selectHistoryFilePath.length - 1]
+                updateCurrentFilePath()
+                queryFiles(host, previous.path)
+            }
+        }
+
+        function currentFilePath() {
+            return selectHistoryFilePath[selectHistoryFilePath.length - 1];
+        }
+
+
+        /**
+         * 更新当前选中的文件路径
+         */
+        function updateCurrentFilePath() {
+            let currentFilePathContainer = $("#currentFilePathContainer")
+            currentFilePathContainer.empty()
+            selectHistoryFilePath.forEach((data, index) => {
+                let div = $('<div style="display: flex;flex-direction: row;cursor:pointer;"></div>')
+                let p = $('<p style="font-size: 18px;color: black;margin: auto"></p>').text(data.name)
+                div.append(p)
+                if (selectHistoryFilePath.length - 1 !== index) {
+                    div.append(nextIcon)
+                    p.css("color", "blue")
+                } else {
+                    p.css("color", "black")
+                }
+                div.click(function () {
+                    back(data)
+                })
+                currentFilePathContainer.append(div)
+            })
+        }
+
+        /**
+         * 创建视图
+         * @param onClick 视图的点击事件
+         */
+        function createEmptyView(onClick) {
+            let fileEmptyContainer = $('<div class="fileEmptyContainer" style="display: flex;flex-direction: column;justify-content: center;align-items: center;margin-top: 150px"></div>')
+            let div = $('<div></div>').append(emptyIcon)
+            let emptyTips = $('<p style="color: black;font-size: 20px;"></p>').text("没有文件")
+            let buttonReturn = $('<button style="color: white;font-size: 14px;border-radius: 14px;border-width:0;background-color: blue;width: 100px;height: 40px;margin-top: 20px;"></button>')
+                .text("返回").click(function () {
+                    onClick()
+                })
+            fileEmptyContainer.append(div, emptyTips, buttonReturn)
+            return fileEmptyContainer
+        }
+
+        /**
+         * 创建视图
+         * @param data 数据
+         * @param onClick 视图的点击事件
+         */
+        function createItemView(data, onClick) {
+            let fileDescriptionContainer = $('<div class="fileDescriptionContainer"></div>')
+            let tvName = $('<p class="tvName"></p>').text(data.name)
+            let tvDescription = $('<p class="tvDescription" style="color: gray;font-size: 12px"></p>').text(data.description)
+            fileDescriptionContainer.append(tvName, tvDescription)
+            let fileIconContainer = $('<div class="fileIconContainer"></div>')
+            let fileNextContainer = $('<div class="fileNextContainer"></div>')
+            if (data.isFile) {
+                fileIconContainer.append(fileIcon)
+            } else {
+                fileIconContainer.append(folderIcon)
+                fileNextContainer.append(nextIcon)
+            }
+            return $('<li class="fileItemContainer"></li>')
+                .append(fileIconContainer, fileDescriptionContainer, fileNextContainer)
+                .click(() => {
+                    if (!data.isFile) {
+                        onClick(data)
+                    } else {
+                        downloadFile(data.name, data.path)
+                    }
+                })
+        }
+
+        /**
+         * 下载文件
+         * @param fileName 文件名称
+         * @param filePath 文件路径
+         */
+        function downloadFile(fileName, filePath) {
+            let url = host + "/files/download?selectFile=" + filePath
+            //方案1：在浏览器中打开链接，如果文件支持预览就直接在浏览器中显示。不支持就直接下载
+            // window.location.href = url
+            //方案2：直接下载文件保存到本地
+            let xhr = new XMLHttpRequest()
+            xhr.open("GET", url, true)
+            xhr.responseType = 'blob'
+            xhr.send()
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const blob = xhr.response
+                    const a = document.createElement('a')
+                    const url = window.URL.createObjectURL(blob)
+                    a.href = url
+                    a.download = fileName
+                    document.body.appendChild(a)
+                    a.click()
+                    a.remove()
+                    window.URL.revokeObjectURL(url)
+                }
+            }
+        }
+
+        /**
+         * 拦截上传文件表单
+         */
+        function interceptUploadFileForm() {
+            $('#fileUploadForm').submit(function (e) {
+                e.preventDefault(); // 阻止表单默认提交行为
+                let formData = new FormData($(this)[0]); // 创建FormData对象
+                let file = formData.get("file")
+                let fileName = file.name
+                //内置的文件名称会有乱码现象，这里定义一个fileName参数解决
+                formData.append("fileName", encodeURIComponent(fileName))
+                //当前路径
+                formData.append("toPath", encodeURIComponent(currentFilePath().path))
+                calculateFileMd5(file)
+                    .then(function (fileMd5) {
+                        console.log("fileMd5:" + fileMd5)
+                        formData.append("fileMd5", fileMd5)
+                    })
+                    .then(function () {
+                        let url = host + "/files/upload"
+                        $.ajax({
+                            url: url, // 替换为你的上传脚本地址
+                            type: 'POST',
+                            data: formData,
+                            contentType: false, // 防止jQuery修改contentType
+                            processData: false, // 防止jQuery处理data成字符串
+                            success: function (response) {
+                                console.log('File uploaded successfully');
+                                console.log(response); // 服务器响应
+
+                                refreshCurrent()
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log('File upload failed: ' + textStatus);
+                            },
+                        });
+                    })
+            });
+
+            function refreshCurrent() {
+                queryFiles(host, currentFilePath().path)
+            }
+        }
+
+        /**
+         * 计算文件的md6值
+         */
+        async function calculateFileMd5(file) {
+            let promise = new Promise((resolve, reject) => {
+                let reader = new FileReader()
+                reader.onload = function (e) {
+                    let md5 = SparkMD5.ArrayBuffer.hash(e.target.result)
+                    console.log("[calculateFileMd5]md5:" + md5)
+                    resolve(md5)
+                }
+                reader.readAsArrayBuffer(file)
+            })
+            return await promise
+        }
+
+        /**
+         * 当HTML渲染准备完毕后，回调此方法，用于执行JS代码
+         */
+        $(document).ready(function () {
+            interceptUploadFileForm()
+            updateCurrentFilePath()
+            queryFiles(host, "");
         });
     </script>
+    <style>
+        p {
+            padding: 0;
+            margin: 0;
+        }
+
+        #currentFilePathContainer {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .fileItemContainer {
+            border-radius: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .fileDescriptionContainer {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        .fileIconContainer {
+            justify-content: center;
+            margin: auto 10px auto 0;
+        }
+
+        .fileNextContainer {
+            justify-content: center;
+            margin: auto 10px auto 0;
+        }
+
+        #fileContainer {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #uploadFile {
+            position: fixed;
+            right: 40px;
+            bottom: 40px;
+        }
+    </style>
 </head>
 <body>
-<h1>欢迎来到Wifi Server</h1>
-<button id="btn">我是按钮</button>
+<div id="uploadFile">
+    <form id="fileUploadForm" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit" id="uploadButton">上传</button>
+    </form>
+    <!-- <input type="file" id="fileInput" name="file">
+     <button id="uploadButton">上传</button>-->
+</div>
+<div>
+    <div id="currentFilePathContainer"></div>
+    <ul id="fileContainer"></ul>
+</div>
 </body>
 </html>
