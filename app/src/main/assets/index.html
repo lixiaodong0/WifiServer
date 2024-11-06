@@ -2,9 +2,88 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale-1.0">
     <title>Wifi Server</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        let host = window.location.host
+        /**
+         * 当HTML渲染准备完毕后，回调此方法，用于执行JS代码
+         */
+        $(document).ready(function () {
+            $('#fileManagerContainer').click(function () {
+                let url = "/files"
+                console.log("url=" + url)
+                window.location.href = url
+            })
+
+            $('#chatContainer').click(function () {
+                alert("该功能暂未开放")
+                // window.location.href = "/chat"
+            })
+        });
+    </script>
+    <style>
+        #supportModuleContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #fileManagerContainer {
+            background-color: white;
+            border-radius: 40px;
+            border-color: transparent;
+            border-width: 0;
+            width: 200px;
+            height: 100px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chatContainer {
+            background-color: white;
+            border-radius: 40px;
+            border-color: transparent;
+            border-width: 0;
+            width: 200px;
+            height: 100px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        html {
+            background-color: #F5F5F5;
+        }
+
+        body {
+            padding-top: 40px;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+            color: black;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-<h1>欢迎来到Wifi Server</h1>
+<h1 style="text-align: center">欢迎来到Wifi Server</h1>
+<div id="supportModuleContainer">
+    <div id="fileManagerContainer">
+        <p>存储管理</p>
+    </div>
+    <div id="chatContainer">
+        <p>聊天室</p>
+    </div>
+</div>
 </body>
 </html>

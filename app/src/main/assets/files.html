@@ -8,6 +8,7 @@
     <script src="https://cdn.bootcss.com/spark-md5/3.0.0/spark-md5.js"></script>
 
     <script>
+        let host = window.location.host
         let folderIcon = ('<svg t="1730694330031" class="icon" viewBox="0 0 1204 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1780" width="32" height="32"><path d="M561.63235285 164.57352927h335.01838211c27.29779432 0 49.63235285 22.33455854 49.63235366 49.63235284v62.04044147c0 27.29779432-22.33455854 49.63235285-49.63235366 49.63235284H561.63235285c-27.29779432 0-49.63235285-22.33455854-49.63235285-49.63235284v-62.04044147c0-27.29779432 22.33455854-49.63235285 49.63235285-49.63235284z" fill="#AFFCFE" p-id="1781"></path><path d="M983.50735284 933.875H189.38970568c-54.59558862 0-99.26470568-44.66911789-99.26470568-99.26470568V189.38970568c0-54.59558862 44.66911789-99.26470568 99.26470568-99.26470568h285.38602928c68.24448496 18.61213211 54.59558862 53.35477927 99.2647065 99.26470568l31.02021992 49.63235286H983.50735284c54.59558862 0 99.26470568 44.66911789 99.26470569 99.2647065v496.32352928c0 54.59558862-44.66911789 99.26470568-99.26470569 99.26470568z" fill="#2F77F1" p-id="1782"></path></svg>')
         let fileIcon = ('<svg t="1730694308454" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1621" width="32" height="32"><path d="M146.863158 0h538.947368l296.421053 296.421053v619.789473c0 59.284211-48.505263 107.789474-107.789474 107.789474H146.863158c-59.284211 0-107.789474-48.505263-107.789474-107.789474V107.789474c0-59.284211 48.505263-107.789474 107.789474-107.789474z" fill="#2F77F1" p-id="1622"></path><path d="M688.505263 0l296.421053 296.421053h-296.421053V0zM549.726316 661.557895H142.821053c-14.821053 0-25.6-12.126316-25.6-25.6V633.263158c0-14.821053 12.126316-25.6 25.6-25.6h406.905263c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-10.778947 25.6-25.6 25.6z m-134.736842-350.31579H142.821053c-14.821053 0-25.6-10.778947-25.6-25.6V282.947368c0-14.821053 12.126316-25.6 25.6-25.6h272.168421c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-10.778947 25.6-25.6 25.6z m-272.168421 121.263158h245.221052c13.473684 0 25.6 12.126316 25.6 25.6v2.694737c0 13.473684-12.126316 25.6-25.6 25.6H142.821053c-14.821053 0-25.6-10.778947-25.6-25.6V458.105263c0-14.821053 12.126316-25.6 25.6-25.6z" fill="#AFFCFE" p-id="1623"></path></svg>')
         let imageIcon = ('<svg t="1730694357863" class="icon" viewBox="0 0 1426 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="32" height="32"><path d="M241.01111082 62h960.00000028c65.99999971 0 119.99999971 54 119.99999972 119.99999971v660.00000058c0 65.99999971-54 119.99999971-119.99999972 119.99999971h-960.00000028c-65.99999971 0-119.99999971-54-119.99999972-119.99999971V181.99999971c0-65.99999971 54-119.99999971 119.99999972-119.99999971z" fill="#2F77F1" p-id="1940"></path><path d="M331.01111082 271.99999971m-90 0a90 90 0 1 0 180 0 90 90 0 1 0-180 0Z" fill="#AFFCFE" p-id="1941"></path><path d="M1321.01111082 748.99999971v-74.99999971L1052.5111111 446.00000029c-11.99999971-9-29.99999971-9-38.99999971 1.49999942L736.01111082 723.5 503.5111111 566c-7.49999971-7.49999971-18-10.50000029-28.50000028-7.49999971L131.51111139 737c-4.5 1.50000029-7.49999971 2.99999971-10.50000029 4.5v49.5c6.00000029 4.5 15.00000029 7.49999971 24.00000029 4.5l325.49999943-173.99999971 243 166.5c6.00000029 6.00000029 13.5 9 21.00000057 9s15.00000029-2.99999971 20.99999971-9l279-279 277.49999972 235.49999942c2.99999971 2.99999971 6.00000029 4.5 9 4.5z" fill="#AFFCFE" p-id="1942"></path></svg>')
@@ -16,7 +17,6 @@
 
         let nextIcon = ('<svg t="1730522103881" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3230" width="32" height="32"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#bfbfbf" p-id="3231"></path></svg>')
 
-        let host = "http://192.168.31.89:8080"
         let rootFilePath = "手机存储"
         let selectHistoryFilePath = [{
             name: rootFilePath,
@@ -25,12 +25,11 @@
 
         /**
          * 查询文件路径
-         * @param host 主机地址
-         * @param path 请求的路径
+         * @param selectDirPath 请求的路径
          */
-        function queryFiles(host, path) {
-            $.getJSON(host + "/files/get", {
-                selectDirPath: path
+        function queryFiles(selectDirPath) {
+            $.getJSON("/files/get", {
+                selectDirPath: selectDirPath
             }, function (data) {
                 console.log("code: " + data.code);
                 console.log("message: " + data.message);
@@ -45,7 +44,7 @@
                 } else {
                     data.result.forEach((item) => {
                         let itemView = createItemView(item, function (data) {
-                            queryFiles(host, data.path)
+                            queryFiles(data.path)
                             selectHistoryFilePath.push(data)
                             updateCurrentFilePath()
                         })
@@ -67,7 +66,7 @@
                 selectHistoryFilePath.pop()
                 let previous = selectHistoryFilePath[selectHistoryFilePath.length - 1]
                 updateCurrentFilePath()
-                queryFiles(host, previous.path)
+                queryFiles(previous.path)
             }
         }
 
@@ -83,8 +82,8 @@
             let currentFilePathContainer = $("#currentFilePathContainer")
             currentFilePathContainer.empty()
             selectHistoryFilePath.forEach((data, index) => {
-                let div = $('<div style="display: flex;flex-direction: row;cursor:pointer;"></div>')
-                let p = $('<p style="font-size: 18px;color: black;margin: auto"></p>').text(data.name)
+                let div = $('<div style="display: flex;flex-direction: row;cursor:pointer;max-width: 160px"></div>')
+                let p = $('<p class="currentPath" style="font-size: 18px;color: black;margin: auto;text-overflow: ellipsis;white-space:nowrap;overflow:hidden;"></p>').text(data.name)
                 div.append(p)
                 if (selectHistoryFilePath.length - 1 !== index) {
                     div.append(nextIcon)
@@ -150,7 +149,7 @@
          * @param filePath 文件路径
          */
         function downloadFile(fileName, filePath) {
-            let url = host + "/files/download?selectFile=" + filePath
+            let url = "/files/download?selectFile=" + filePath
             //方案1：在浏览器中打开链接，如果文件支持预览就直接在浏览器中显示。不支持就直接下载
             // window.location.href = url
             //方案2：直接下载文件保存到本地
@@ -192,7 +191,7 @@
                         formData.append("fileMd5", fileMd5)
                     })
                     .then(function () {
-                        let url = host + "/files/upload"
+                        let url = "/files/upload"
                         $.ajax({
                             url: url, // 替换为你的上传脚本地址
                             type: 'POST',
@@ -213,7 +212,7 @@
             });
 
             function refreshCurrent() {
-                queryFiles(host, currentFilePath().path)
+                queryFiles(currentFilePath().path)
             }
         }
 
@@ -239,7 +238,7 @@
         $(document).ready(function () {
             interceptUploadFileForm()
             updateCurrentFilePath()
-            queryFiles(host, "");
+            queryFiles("");
         });
     </script>
     <style>
@@ -251,6 +250,7 @@
         #currentFilePathContainer {
             display: flex;
             flex-direction: row;
+            overflow-x: auto;
         }
 
         .fileItemContainer {
